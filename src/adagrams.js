@@ -1,4 +1,4 @@
-const LETTER_DISTRIBUTION = {
+const LETTER_POOL = {
     'A': 9, 'B': 2, 'C': 2, 'D': 4, 'E': 12, 'F': 2, 'G': 3, 'H': 2, 'I': 9,
     'J': 1, 'K': 1, 'L': 4, 'M': 2, 'N': 6, 'O': 8, 'P': 2, 'Q': 1, 'R': 6,
     'S': 6, 'T': 6, 'U': 4, 'V': 2, 'W': 2, 'X': 1, 'Y': 2, 'Z': 1,
@@ -9,23 +9,23 @@ const C_MAX = 91;
 
 export const drawLetters = () => {
   const hand = [];
-  const seen = {};
+  const handHasLetter = {};
 
   for (let i = 0; i < FULL_HAND; i++) {
     const randomLetter = (() => {
-      let charCode = Math.floor(Math.random() * (C_MAX - C_MIN) + C_MIN);
+      const charCode = Math.floor(Math.random() * (C_MAX - C_MIN) + C_MIN);
       return String.fromCharCode(charCode);
     })();
 
-    if (seen[randomLetter] >= LETTER_DISTRIBUTION[randomLetter]) {
+    if (handHasLetter[randomLetter] >= LETTER_POOL[randomLetter]) {
       i--;
       continue;
-    } else if (seen[randomLetter]) {
+    } else if (handHasLetter[randomLetter]) {
       hand.push(randomLetter);
-      seen[randomLetter] += 1;
+      handHasLetter[randomLetter] += 1;
     } else {
       hand.push(randomLetter);
-      seen[randomLetter] = 1;
+      handHasLetter[randomLetter] = 1;
     }
   }
 
