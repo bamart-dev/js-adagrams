@@ -10,7 +10,9 @@ const POINTS = {
 }
 const FULL_HAND = 10;
 const C_MIN = 65;
-const C_MAX = 91;
+const C_MAX = 90;
+const BONUS_CUTOFF = 7;
+const LRG_WORD_BONUS = 8;
 
 export const drawLetters = () => {
   const hand = [];
@@ -41,7 +43,7 @@ export const usesAvailableLetters = (input, lettersInHand) => {
 
   for (const char in letterCount) {
     if (!lettersInHandCount[char] || letterCount[char] > lettersInHandCount[char]) {
-        return false;
+      return false;
     }
   }
 
@@ -49,18 +51,28 @@ export const usesAvailableLetters = (input, lettersInHand) => {
 };
 
 export const scoreWord = (word) => {
-  // Implement this method for wave 3
+  //* sum word total based on POINTS
+  let score = 0;
+
+  for (const char of word) {
+    const letter = validateLetter(char);
+    score += POINTS[letter];
+  }
+
+  return word.length < BONUS_CUTOFF ? score : score + LRG_WORD_BONUS;
 };
 
 export const highestScoreFrom = (words) => {
   // Implement this method for wave 4
 };
 
+
 //* Helper Functions
 const generateCounts = (iterable) => {
   const counts = {};
 
-  for (const char of iterable) {
+  for (const c of iterable) {
+    const char = validateLetter(c);
     counts[char] = (counts[char] || 0) + 1;
   }
 
@@ -68,7 +80,17 @@ const generateCounts = (iterable) => {
 };
 
 const generateRandomLetter = () => {
-  const charCode = Math.floor(Math.random() * (C_MAX - C_MIN) + C_MIN);
+  const charCode = Math.floor(Math.random() * (C_MAX - C_MIN + 1) + C_MIN);
 
   return String.fromCharCode(charCode);
+};
+
+const validateLetter = (char) => {
+  const upChar = char.toUpperCase();
+
+  if (upChar.charCodeAt() < C_MIN || upChar.charCodeAt() > C_MAX) {
+    throw new TypeError(`${char} is not a valid letter`);
+  }
+
+  return upChar;
 };
