@@ -12,10 +12,7 @@ export const drawLetters = () => {
   const handHasLetter = {};
 
   for (let i = 0; i < FULL_HAND; i++) {
-    const randomLetter = (() => {
-      const charCode = Math.floor(Math.random() * (C_MAX - C_MIN) + C_MIN);
-      return String.fromCharCode(charCode);
-    })();
+    const randomLetter = generateRandomLetter();
 
     if (handHasLetter[randomLetter] >= LETTER_POOL[randomLetter]) {
       i--;
@@ -63,4 +60,10 @@ const generateCounts = (iterable) => {
   }
 
   return counts;
+};
+
+const generateRandomLetter = () => {
+  const charCode = Math.floor(Math.random() * (C_MAX - C_MIN) + C_MIN);
+
+  return String.fromCharCode(charCode);
 };
