@@ -34,7 +34,16 @@ export const drawLetters = () => {
 };
 
 export const usesAvailableLetters = (input, lettersInHand) => {
-  // Implement this method for wave 2
+  const letterCount = generateCounts(input);
+  const lettersInHandCount = generateCounts(lettersInHand);
+
+  for (const char in letterCount) {
+    if (!lettersInHandCount[char] || letterCount[char] > lettersInHandCount[char]) {
+        return false;
+    }
+  }
+
+  return true;
 };
 
 export const scoreWord = (word) => {
@@ -43,4 +52,15 @@ export const scoreWord = (word) => {
 
 export const highestScoreFrom = (words) => {
   // Implement this method for wave 4
+};
+
+//* Helper Functions
+const generateCounts = (iterable) => {
+  const counts = {};
+
+  for (const char of iterable) {
+    counts[char] = (counts[char] || 0) + 1;
+  }
+
+  return counts;
 };
