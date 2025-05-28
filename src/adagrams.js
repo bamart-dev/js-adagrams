@@ -63,7 +63,37 @@ export const scoreWord = (word) => {
 };
 
 export const highestScoreFrom = (words) => {
-  // Implement this method for wave 4
+  let result = {};
+
+  if (words.length === 0) {
+    return result;
+  }
+
+  result['word'] = words[0];
+  result['score'] = (scoreWord(words[0]) || 0)
+
+  for (const word of words) {
+    const score = scoreWord(word);
+
+    if (score < result.score) {
+      continue;
+    }
+
+    if (score === result.score) {
+      if (word.length === FULL_HAND && result.word.length != FULL_HAND) {
+        result.word = word;
+        continue;
+      }
+      if (word.length >= result.word.length) {
+        continue;
+      }
+    }
+
+    result.word = result.word.length === FULL_HAND ? result.word : word;
+    result.score = score
+  }
+
+  return result;
 };
 
 
