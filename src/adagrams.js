@@ -51,7 +51,6 @@ export const usesAvailableLetters = (input, lettersInHand) => {
 };
 
 export const scoreWord = (word) => {
-  //* sum word total based on POINTS
   let score = 0;
 
   for (const char of word) {
@@ -80,16 +79,11 @@ export const highestScoreFrom = (words) => {
     }
 
     if (score === result.score) {
-      if (word.length === FULL_HAND && result.word.length != FULL_HAND) {
-        result.word = word;
-        continue;
-      }
-      if (word.length >= result.word.length) {
-        continue;
-      }
+      result.word = resolveTie(word, result);
+      continue;
     }
 
-    result.word = result.word.length === FULL_HAND ? result.word : word;
+    result.word = word;
     result.score = score
   }
 
@@ -97,7 +91,7 @@ export const highestScoreFrom = (words) => {
 };
 
 
-//* Helper Functions
+// Helper Functions
 const generateCounts = (iterable) => {
   const counts = {};
 
@@ -124,3 +118,14 @@ const validateLetter = (char) => {
 
   return upChar;
 };
+
+const resolveTie = (word, result) => {
+  if (result.word.length === FULL_HAND) {
+    return result.word;
+  }
+  if (word.length === FULL_HAND || word.length < result.word.length) {
+    return word;
+  }
+
+  return result.word;
+}
