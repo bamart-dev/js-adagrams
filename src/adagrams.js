@@ -113,7 +113,7 @@ const validateLetter = (char) => {
   const upChar = char.toUpperCase();
 
   if (upChar.charCodeAt() < C_MIN || upChar.charCodeAt() > C_MAX) {
-    throw new TypeError(`${char} is not a valid letter`);
+    return null;
   }
 
   return upChar;
