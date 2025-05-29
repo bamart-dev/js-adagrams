@@ -1,7 +1,7 @@
 const LETTER_POOL = {
   'A': 9, 'B': 2, 'C': 2, 'D': 4, 'E': 12, 'F': 2, 'G': 3, 'H': 2, 'I': 9,
   'J': 1, 'K': 1, 'L': 4, 'M': 2, 'N': 6, 'O': 8, 'P': 2, 'Q': 1, 'R': 6,
-  'S': 6, 'T': 6, 'U': 4, 'V': 2, 'W': 2, 'X': 1, 'Y': 2, 'Z': 1,
+  'S': 4, 'T': 6, 'U': 4, 'V': 2, 'W': 2, 'X': 1, 'Y': 2, 'Z': 1,
 }
 const POINTS = {
   'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4, 'I': 1,
@@ -16,25 +16,21 @@ const LRG_WORD_BONUS = 8;
 
 export const drawLetters = () => {
   const hand = [];
-  const handHasLetter = {};
+  const lettersInHand = {};
 
   for (let i = 0; i < FULL_HAND; i++) {
     const randomLetter = generateRandomLetter();
 
-    if (handHasLetter[randomLetter] >= LETTER_POOL[randomLetter]) {
+    if (lettersInHand[randomLetter] >= LETTER_POOL[randomLetter]) {
       i--;
       continue;
-    } else if (handHasLetter[randomLetter]) {
-      hand.push(randomLetter);
-      handHasLetter[randomLetter] += 1;
-    } else {
-      hand.push(randomLetter);
-      handHasLetter[randomLetter] = 1;
     }
+
+    hand.push(randomLetter);
+    lettersInHand[randomLetter] = (lettersInHand[randomLetter] || 0) + 1;
   }
 
   return hand;
-
 };
 
 export const usesAvailableLetters = (input, lettersInHand) => {
@@ -42,7 +38,9 @@ export const usesAvailableLetters = (input, lettersInHand) => {
   const lettersInHandCount = generateCounts(lettersInHand);
 
   for (const char in letterCount) {
-    if (!lettersInHandCount[char] || letterCount[char] > lettersInHandCount[char]) {
+    if (!lettersInHandCount[char]
+        || letterCount[char] > lettersInHandCount[char]) {
+
       return false;
     }
   }
@@ -123,6 +121,7 @@ const resolveTie = (word, result) => {
   if (result.word.length === FULL_HAND) {
     return result.word;
   }
+
   if (word.length === FULL_HAND || word.length < result.word.length) {
     return word;
   }
