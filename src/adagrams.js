@@ -9,8 +9,8 @@ const POINTS = {
   'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8, 'Y': 4, 'Z': 10,
 }
 const FULL_HAND = 10;
-const C_MIN = 65;
-const C_MAX = 90;
+const C_MIN = 65;  // ASCII 'A'
+const C_MAX = 90;  // ASCII 'Z'
 const BONUS_CUTOFF = 7;
 const LRG_WORD_BONUS = 8;
 
@@ -69,7 +69,8 @@ export const highestScoreFrom = (words) => {
   result['word'] = words[0];
   result['score'] = (scoreWord(words[0]) || 0)
 
-  for (const word of words) {
+  for (let i = 1; i < words.length; i++) {
+    const word = words[i];
     const score = scoreWord(word);
 
     if (score < result.score) {
